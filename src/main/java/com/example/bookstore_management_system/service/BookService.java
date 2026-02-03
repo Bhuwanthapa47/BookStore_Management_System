@@ -26,8 +26,10 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public Book updateBook(Long id, Book updatedBook) {
-        Book book = getBookById(id);
+    public Book updateBook(Long bookId, Book updatedBook) {
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
 
         book.setTitle(updatedBook.getTitle());
         book.setAuthor(updatedBook.getAuthor());
@@ -35,12 +37,17 @@ public class BookService {
         book.setPrice(updatedBook.getPrice());
         book.setStockQuantity(updatedBook.getStockQuantity());
         book.setDescription(updatedBook.getDescription());
-        book.setImageUrl(updatedBook.getImageUrl());
 
         return bookRepository.save(book);
     }
 
-    public void deleteBook(Long id) {
-        bookRepository.deleteById(id);
+
+    public void deleteBook(Long bookId) {
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        bookRepository.delete(book);
     }
+
 }

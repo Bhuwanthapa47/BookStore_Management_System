@@ -4,6 +4,7 @@ import com.example.bookstore_management_system.entity.Book;
 import com.example.bookstore_management_system.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,14 +33,26 @@ public class BookController {
         return bookService.addBook(book);
     }
 
-    @PutMapping("/{id}")
-    public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
-        return bookService.updateBook(id, book);
+    @PutMapping("/{bookId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Book updateBook(
+            @PathVariable Long bookId,
+            @RequestBody Book updatedBook) {
+
+        return bookService.updateBook(bookId, updatedBook);
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteBook(@PathVariable Long id) {
-        bookService.deleteBook(id);
+
+    @DeleteMapping("/{bookId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteBook(@PathVariable Long bookId) {
+
+        bookService.deleteBook(bookId);
         return "Book deleted successfully";
     }
+
+
+
+
+
 }
