@@ -29,5 +29,16 @@ public class CartController {
     public Cart viewCart(Authentication auth) {
         return cartService.viewCart(auth.getName());
     }
+
+    @DeleteMapping("/remove/{cartItemId}")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public Cart removeFromCart(
+            @PathVariable Long cartItemId,
+            Authentication authentication) {
+
+        return cartService.removeFromCart(authentication.getName(), cartItemId);
+    }
+
+
 }
 

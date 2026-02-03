@@ -43,5 +43,16 @@ public class CartService {
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
     }
 
+    public Cart removeFromCart(String email, Long cartItemId) {
+
+        Cart cart = cartRepository.findByUserEmail(email)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        cart.getItems().removeIf(item -> item.getId().equals(cartItemId));
+
+        return cartRepository.save(cart);
+    }
+
+
 }
 
